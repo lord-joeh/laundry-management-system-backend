@@ -1,0 +1,34 @@
+{
+  "name": "laundry-service-app",
+  "version": "1.0.0",
+  "description": "A comprehensive laundry service software for online and walk-in bookings.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.2",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^6.14.2",
+    "mongoose": "^8.12.1",
+    "nodemailer": "^6.4.11",
+    "paystack-api": "^1.0.0",
+    "twilio": "^5.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "keywords": [
+    "laundry",
+    "service",
+    "booking",
+    "management"
+  ],
+  "author": "Joseph Mensah",
+  "license": "MIT"
+}

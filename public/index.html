@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laundry Service</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Laundry Service</h1>
+        <nav>
+            <ul>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#booking">Book Now</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="services">
+            <h2>Our Services</h2>
+            <div id="service-list">
+                <!-- Service items will be dynamically populated here -->
+            </div>
+        </section>
+
+        <section id="booking">
+            <h2>Book a Service</h2>
+            <form id="booking-form">
+                <label for="customer-name">Name:</label>
+                <input type="text" id="customer-name" required>
+
+                <label for="customer-phone">Phone:</label>
+                <input type="tel" id="customer-phone" required>
+
+                <label for="service-type">Select Service:</label>
+                <select id="service-type" required>
+                    <!-- Service options will be dynamically populated here -->
+                </select>
+
+                <label for="items">Items:</label>
+                <textarea id="items" required></textarea>
+
+                <button type="submit">Get Quote</button>
+            </form>
+            <div id="quote-display">
+                <!-- Quote will be displayed here -->
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>If you have any questions, feel free to reach out!</p>
+            <p>Email: support@laundryservice.com</p>
+            <p>Phone: +1234567890</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Laundry Service. All rights reserved.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
