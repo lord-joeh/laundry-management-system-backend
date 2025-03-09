@@ -15,7 +15,7 @@ exports.register = async (req, res) => {
 
         // Send confirmation email and SMS
         sendNotification(email, 'Registration Successful', 'Welcome to our laundry service!');
-        // sendSMS(phoneNumber, 'Registration Successful. Welcome to our laundry service!');
+        sendSMS(phoneNumber, 'Registration Successful. Welcome to our laundry service!');
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

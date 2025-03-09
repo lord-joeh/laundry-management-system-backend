@@ -2,6 +2,7 @@ const paystackConfig = require('../../config/paystack');
 require('dotenv').config();
 const Order = require('../models/Order');
 const { sendNotification } = require('../utils/email');
+const { sendSMS } = require('../utils/sms');
 
 exports.initializePayment = async (req, res) => {
   try {
@@ -23,10 +24,15 @@ exports.initializePayment = async (req, res) => {
     await order.save();
 
     // Send the authorization_url to the customer's email
-    sendNotification(
-      order.customerId.email, "Payment Authorization",
-      `Please use the link below to complete your payment\n\n ${paymentData.data.authorization_url}`,
-    );
+    const authorizationEmail = `
+      <p>Please use the link below to complete your payment: 
+      <a href="${paymentData.data.authorization_url}">Click Here</a>
+       to complete payment</p>
+    `;
+    sendNotification(order.customerId.email, "Payment Authorization", authorizationEmail);
+    sendSMS(order.customerId.phoneNumber,
+      `Please use the link below to complete your payment.
+       ${paymentData.data.authorization_url}`);
 
     res.status(200).json({
       message: 'Payment initialized successfully and authorization link sent to email',

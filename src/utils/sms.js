@@ -1,17 +1,17 @@
-const twilio = require('twilio');
+require('dotenv').config();
+const axios = require('axios');
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
-const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
-const client = new twilio(accountSid, authToken);
-
-const sendSMS = (to, message) => {
-    return client.messages.create({
-        body: message,
-        to: to,  // Text this number
-        from: process.env.TWILIO_PHONE_NUMBER // From a valid Twilio number
-    });
+const sendSMS = async (to, message) => {
+  try {
+    const response = await axios.get(
+      `${process.env.ARKESEL_BASE_URL}api_key=${process.env.ARKESEL_API_KEY}&to=${to}&from=${process.env.ARKESEL_SENDER_ID}&sms=${message}`
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error sending SMS:', error.message);
+  }
 };
 
 module.exports = {
-    sendSMS
+  sendSMS,
 };

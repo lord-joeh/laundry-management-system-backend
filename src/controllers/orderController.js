@@ -40,16 +40,25 @@ exports.createOrder = async (req, res) => {
     await order.save();
     const customer = await Customer.findById(customerId);
     if (customer) {
-      sendOrderConfirmation(
-        customer.email,
-        `Service:\n ${services
-          .map(
-            (s) =>
-              `Service ID: ${s.serviceType} , Quantity: ${s.quantity} , Price: GHS ${s.price}`,
-          )
-          .join('\n')}\nTotal Amount: GHS ${order.totalAmount}\nOrder ID: ${
-          order._id
-        }`,
+      const orderDetails = `
+        <h2>Service:</h2>
+        <ul>
+          ${services
+            .map(
+              (s) =>
+                `<li>Service ID: ${s.serviceType}, Quantity: ${s.quantity}, Price: GHS ${s.price}</li>`,
+            )
+            .join('')}
+        </ul>
+        <p>Total Amount: GHS ${order.totalAmount}</p>
+        <p>Order ID: ${order._id}</p>
+      `;
+      sendOrderConfirmation(customer.email, orderDetails);
+      sendSMS(
+        customer.phoneNumber,
+        `Your order with orderID: ${order._id} has been created successfully.
+         Total amount: GHS ${order.totalAmount}
+        `,
       );
     }
 
@@ -71,11 +80,7 @@ exports.updateOrderStatus = async (req, res) => {
       return res.status(400).json({ message: 'Invalid input data' });
     }
 
-    const order = await Order.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true },
-    );
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
@@ -87,7 +92,15 @@ exports.updateOrderStatus = async (req, res) => {
       sendNotification(
         customer.email,
         'Order Status Update',
-        `Hello ${customer.name}\n\nYour order with orderID: ${id} is ${order.status}`,
+        `<h2> Hello, ${customer.name} </h2> 
+        <p>Your order with <em> orderID: ${id} </em> is <em>${order.status}</em> </p>
+        `,
+      );
+      sendSMS(
+        customer.phoneNumber,
+        `Hello, ${customer.name}.
+        Your order with orderID: ${id} is ${order.status}
+        `,
       );
     }
   } catch (error) {
