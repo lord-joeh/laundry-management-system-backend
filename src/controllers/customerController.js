@@ -11,7 +11,8 @@ exports.createCustomer = async (req, res) => {
 
     // Send email to customer
     sendNotification(
-      email, 'Customer Registration',
+      email,
+      'Customer Registration',
       `<h3> Welcome to Styles Laundry Service.</h3>
              <p>Thank you for registering with our laundry service.</p>
             `,
@@ -20,16 +21,12 @@ exports.createCustomer = async (req, res) => {
     // Send SMS to customer
     sendSMS(
       phoneNumber,
-      `Welcome to Styles Laundry Service. 
-             Thank you for registering with our laundry service.
-            `,
+      `Welcome to Styles Laundry Service. Thank you for registering with our laundry service.`,
     );
-    res
-      .status(201)
-      .json({
-        message: 'Customer created successfully',
-        customer: newCustomer,
-      });
+    res.status(201).json({
+      message: 'Customer created successfully',
+      customer: newCustomer,
+    });
   } catch (error) {
     res
       .status(500)
@@ -79,12 +76,10 @@ exports.updateCustomer = async (req, res) => {
     if (!updatedCustomer) {
       return res.status(404).json({ message: 'Customer not found' });
     }
-    res
-      .status(200)
-      .json({
-        message: 'Customer updated successfully',
-        customer: updatedCustomer,
-      });
+    res.status(200).json({
+      message: 'Customer updated successfully',
+      customer: updatedCustomer,
+    });
   } catch (error) {
     res
       .status(500)

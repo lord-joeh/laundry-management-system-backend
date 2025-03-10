@@ -20,7 +20,7 @@ The Laundry Service Application is a comprehensive software solution designed to
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/laundry-service-app.git
+   git clone https://github.com/lord-joeh/laundry-service-app.git
 
 2. Navigate to the project directory:
    cd laundry-service-app
@@ -36,9 +36,9 @@ The Laundry Service Application is a comprehensive software solution designed to
    EMAIL_PASS=your_email_password
    JWT_SECRET=your_jwt_secret
    PORT=3000
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   TWILIO_ACCOUNT_SID=your_twilio_account_sid
-   TWILIO_PHONE_NUMBER=your_twilio_phone_number
+   ARKESEL_API_KEY=your_arkesel_api_key
+   ARKESEL_SENDER_ID=your_sender_id
+   ARKESEL_BASE_URL=https://sms.arkesel.com/sms/api?action=send-sms&
 
 5. Start the server
    npm start
@@ -50,7 +50,7 @@ The Laundry Service Application is a comprehensive software solution designed to
   - POST /api/auth/register: Register a new user
   - POST /api/auth/login: Login an existing user
   - POST /api/auth/reset-password: Reset user password
-  - POST /api/auth/logout: Logout an existing user
+  - POST /api/auth/logout: Log user out
 
 # Customer Management
 

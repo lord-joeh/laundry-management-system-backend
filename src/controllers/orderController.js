@@ -13,6 +13,7 @@ const calculateTotalAmount = async (services) => {
       throw new Error(`Service not found for ID: ${service.serviceType}`);
     }
     service.price = serviceDetails.price; // Ensure price is set
+    service.name = serviceDetails.serviceType; // Add service name
     totalAmount += serviceDetails.price * service.quantity;
   }
   return totalAmount;
@@ -41,24 +42,30 @@ exports.createOrder = async (req, res) => {
     const customer = await Customer.findById(customerId);
     if (customer) {
       const orderDetails = `
-        <h2>Service:</h2>
-        <ul>
-          ${services
-            .map(
-              (s) =>
-                `<li>Service ID: ${s.serviceType}, Quantity: ${s.quantity}, Price: GHS ${s.price}</li>`,
-            )
-            .join('')}
-        </ul>
-        <p>Total Amount: GHS ${order.totalAmount}</p>
-        <p>Order ID: ${order._id}</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+          <h2 style="color: #007bff;">Order Confirmation</h2>
+          <p>Dear ${customer.name},</p>
+          <p>Thank you for your order! Here are the details of your order:</p>
+          <h3>Service Details</h3>
+          <ul style="list-style-type: none; padding: 0;">
+            ${services
+              .map(
+                (s) =>
+                  `<li style="margin-bottom: 10px;"><strong>Service:</strong> ${s.name}, <strong>Quantity:</strong> ${s.quantity}, <strong>Price:</strong> GHS ${s.price}</li>`,
+              )
+              .join('')}
+          </ul>
+          <p><strong>Total Amount:</strong> GHS ${order.totalAmount}</p>
+          <p><strong>Order ID:</strong> ${order._id.toString()}</p>
+          <p>If you have any questions, feel free to contact us at any time.</p>
+          <p>Best regards,</p>
+          <p><strong>Styles Laundry Service Team</strong></p>
+        </div>
       `;
       sendOrderConfirmation(customer.email, orderDetails);
       sendSMS(
         customer.phoneNumber,
-        `Your order with orderID: ${order._id} has been created successfully.
-         Total amount: GHS ${order.totalAmount}
-        `,
+        `Your order with orderID: ${order._id.toString()} has been created successfully. Total amount: GHS ${order.totalAmount}`,
       );
     }
 
@@ -89,18 +96,24 @@ exports.updateOrderStatus = async (req, res) => {
 
     const customer = await Customer.findById(order.customerId);
     if (customer) {
+      const statusUpdateEmail = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <h2 style="color: #007bff;">Order Status Update</h2>
+            <p>Dear ${customer.name},</p>
+            <p>Your order with <strong>Order ID: ${id.toString()}</strong> is now <strong>${order.status}</strong>.</p>
+            <p>If you have any questions, feel free to contact us at any time.</p>
+            <p>Best regards,</p>
+            <p><strong>Styles Laundry Service Team</strong></p>
+        </div>
+      `;
       sendNotification(
         customer.email,
         'Order Status Update',
-        `<h2> Hello, ${customer.name} </h2> 
-        <p>Your order with <em> orderID: ${id} </em> is <em>${order.status}</em> </p>
-        `,
+        statusUpdateEmail,
       );
       sendSMS(
         customer.phoneNumber,
-        `Hello, ${customer.name}.
-        Your order with orderID: ${id} is ${order.status}
-        `,
+        `Your order with orderID: ${id.toString()} is ${order.status}`,
       );
     }
   } catch (error) {
