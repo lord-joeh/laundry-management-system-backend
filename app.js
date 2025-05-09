@@ -2,11 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const customerRoutes = require('./routes/customerRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-const serviceRoutes = require('./routes/serviceRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const customerRoutes = require('./src/routes/customerRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
+const serviceRoutes = require('./src/routes/serviceRoutes');
+const paymentRoutes = require('./src/routes/paymentRoutes');
 
 const app = express();
 
