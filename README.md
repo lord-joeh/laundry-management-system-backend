@@ -4,7 +4,7 @@ A comprehensive laundry service software for online and walk-in bookings.
 
 ## Overview
 
-This project is a full-stack application designed to manage laundry services, including customer registration, order management, service offerings, and payment processing. It provides a robust API for handling various operations related to laundry services.
+This project is a Node.JS/Express backend service designed to manage laundry services, including customer registration, order management, service offerings, and payment processing. It provides a robust API for handling various operations related to laundry services.
 
 ## Features
 
@@ -21,7 +21,7 @@ This project is a full-stack application designed to manage laundry services, in
 - **Authentication**: JWT (JSON Web Tokens)
 - **Payment Gateway**: Paystack
 - **Email Notifications**: Nodemailer
-- **SMS Notifications**: Custom SMS utility
+- **SMS Notifications**: Arkesel
 
 ## Project Structure
 
