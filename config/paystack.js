@@ -15,7 +15,7 @@ const paystackConfig = {
                 initData,
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`, // Replace with your actual test secret key
+                        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
                         'Content-Type': 'application/json'
                     }
                 }
@@ -24,8 +24,6 @@ const paystackConfig = {
             return initResponse.data;
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
                 console.error('Error response data:', error.response.data);
                 console.error('Error response status:', error.response.status);
                 console.error('Error response headers:', error.response.headers);
@@ -48,7 +46,7 @@ const paystackConfig = {
                 `https://api.paystack.co/transaction/verify/${code}`,
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` // Replace with your actual test secret key
+                        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
                     }
                 }
             );

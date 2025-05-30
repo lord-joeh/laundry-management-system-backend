@@ -10,11 +10,17 @@ exports.initializePayment = async (req, res) => {
 
     const order = await Order.findById(id).populate('customerId');
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
     }
 
     if (!order.customerId) {
-      return res.status(404).json({ message: 'Customer not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'Customer not found',
+      });
     }
 
     const paymentData = await paystackConfig.initializePayment(
@@ -50,13 +56,18 @@ exports.initializePayment = async (req, res) => {
     );
 
     res.status(200).json({
+      success: true,
       message:
         'Payment initialized successfully and authorization link sent to successfully',
       paymentData: paymentData,
     });
   } catch (error) {
     console.error('Error initializing payment:', error.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message,
+    });
   }
 };
 
@@ -76,11 +87,16 @@ exports.verifyPayment = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Payment verified successfully',
       verificationData: verificationData,
     });
   } catch (error) {
     console.error('Error verifying payment:', error.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message,
+    });
   }
 };

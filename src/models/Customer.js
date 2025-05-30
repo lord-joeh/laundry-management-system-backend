@@ -7,8 +7,7 @@ const customerSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true,
-        unique: true,
+        required: true
     },
     email: {
         type: String,
@@ -19,6 +18,7 @@ const customerSchema = new mongoose.Schema({
     address: {
         type: String,
         required: false,
+        trim: true
     },
     loyaltyPoints: {
         type: Number,
@@ -27,5 +27,6 @@ const customerSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Customer = mongoose.model('Customer', customerSchema);
+
 
 module.exports = Customer;

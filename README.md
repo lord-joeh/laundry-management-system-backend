@@ -68,26 +68,28 @@ laundry-service-app/
 - `POST /api/auth/reset-password`: Reset user password.
 - `POST /api/auth/forgot-password`: Request a password reset.
 - `GET /api/auth/logout`: Logout a user.
+- `PUT /api/auth/:id`: Update User information.
+- `DELETE /api/auth/:id`: Delete a user.
 
 ### Customer
-- `POST /api/customers/createCustomer`: Create a new customer.
-- `GET /api/customers/allCustomers`: Get all customers.
+- `POST /api/customers/`: Create a new customer.
+- `GET /api/customers/`: Get all customers.
 - `GET /api/customers/:id`: Get customer details by ID.
 - `PUT /api/customers/:id`: Update customer information.
 - `DELETE /api/customers/:id`: Delete a customer.
 
 ### Order
-- `POST /api/orders/createOrder`: Create a new order.
-- `GET /api/orders/customer/:customerId`: Get all orders for a customer.
-- `GET /api/orders/orders`: Get all orders (admin use).
+- `POST /api/orders/`: Create a new order.
+- `GET /api/orders/:customerId`: Get all orders for a customer.
+- `GET /api/orders/`: Get all orders (admin use).
 - `GET /api/orders/:id`: Get order details by ID.
 - `PUT /api/orders/:id`: Update an existing order.
 - `DELETE /api/orders/:id`: Delete an order.
 
 ### Service
-- `GET /api/services/allServices`: Get all available laundry services.
+- `GET /api/services/`: Get all available laundry services.
 - `GET /api/services/:id`: Get details of a specific service by ID.
-- `POST /api/services/createService`: Create a new laundry service (admin only).
+- `POST /api/services/`: Create a new laundry service (admin only).
 - `PUT /api/services/:id`: Update an existing laundry service (admin only).
 - `DELETE /api/services/:id`: Delete a laundry service (admin only).
 

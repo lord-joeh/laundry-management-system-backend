@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, resetPassword, forgotPassword, logout } = require('../controllers/authController');
+const {
+  register,
+  login,
+  resetPassword,
+  forgotPassword,
+  logout,
+  updateUser,
+  deleteUser,
+} = require('../controllers/authController');
 const { authenticate } = require('../middleware/auth');
 
 // Route for user registration
@@ -15,7 +23,13 @@ router.post('/reset-password', authenticate, resetPassword);
 // Route for password reset
 router.post('/forgot-password', forgotPassword);
 
+//Route for user update
+router.put('/:id', authenticate, updateUser);
+
 //Route for user logout
 router.get('/logout', authenticate, logout);
+
+//Route to delete user
+router.delete('/:id', authenticate, deleteUser)
 
 module.exports = router;

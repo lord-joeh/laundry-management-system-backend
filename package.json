@@ -2,10 +2,10 @@
   "name": "laundry-service-app",
   "version": "1.0.0",
   "description": "A comprehensive laundry service software for online and walk-in bookings.",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "axios": "^1.8.2",

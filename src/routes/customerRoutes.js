@@ -1,13 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
-const { createCustomer, getAllCustomers, getCustomerById, updateCustomer, deleteCustomer } = require('../controllers/customerController');
+const {
+  createCustomer,
+  getAllCustomers,
+  getCustomerById,
+  updateCustomer,
+  deleteCustomer,
+} = require('../controllers/customerController');
 
 // Route to create a new customer
-router.post('/createCustomer', authenticate, createCustomer);
+router.post('/', authenticate, createCustomer);
 
 // Route to get all customers
-router.get('/allCustomers', authenticate, getAllCustomers);
+router.get('/', authenticate, getAllCustomers);
 
 // Route to get customer details by ID
 router.get('/:id', authenticate, getCustomerById);

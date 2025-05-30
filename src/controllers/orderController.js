@@ -26,7 +26,10 @@ exports.createOrder = async (req, res) => {
 
     // Validate input
     if (!customerId || !services || !Array.isArray(services)) {
-      return res.status(400).json({ message: 'Invalid input data' });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid input data',
+      });
     }
 
     // Calculate the total amount
@@ -65,14 +68,23 @@ exports.createOrder = async (req, res) => {
       sendOrderConfirmation(customer.email, orderDetails);
       sendSMS(
         customer.phoneNumber,
-        `Your order with orderID: ${order._id.toString()} has been created successfully. Total amount: GHS ${order.totalAmount}`,
+        `Your order with orderID: ${order._id.toString()} has been created successfully. Total amount: GHS ${
+          order.totalAmount
+        }`,
       );
     }
 
-    res.status(201).json({ message: 'Order created successfully', order });
+    res.status(201).json({
+      success: true,
+      message: 'Order created successfully',
+      order: order,
+    });
   } catch (error) {
     console.error('Error creating order:', error.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };
 
@@ -84,15 +96,25 @@ exports.updateOrderStatus = async (req, res) => {
 
     // Validate input
     if (!status) {
-      return res.status(400).json({ message: 'Invalid input data' });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid input data',
+      });
     }
 
     const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
     }
 
-    res.status(200).json(order);
+    res.status(200).json({
+      success: true,
+      message: 'Order status updated successfully',
+      order: order,
+    });
 
     const customer = await Customer.findById(order.customerId);
     if (customer) {
@@ -100,7 +122,9 @@ exports.updateOrderStatus = async (req, res) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <h2 style="color: #007bff;">Order Status Update</h2>
             <p>Dear ${customer.name},</p>
-            <p>Your order with <strong>Order ID: ${id.toString()}</strong> is now <strong>${order.status}</strong>.</p>
+            <p>Your order with <strong>Order ID: ${id.toString()}</strong> is now <strong>${
+        order.status
+      }</strong>.</p>
             <p>If you have any questions, feel free to contact us at any time.</p>
             <p>Best regards,</p>
             <p><strong>Styles Laundry Service Team</strong></p>
@@ -117,9 +141,11 @@ exports.updateOrderStatus = async (req, res) => {
       );
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error updating order status', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: 'Error updating order status',
+      error: error.message,
+    });
   }
 };
 
@@ -129,12 +155,23 @@ exports.getOrderDetails = async (req, res) => {
     const { id } = req.params;
     const order = await Order.findById(id).populate('customerId');
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
     }
 
-    res.status(200).json(order);
+    res.status(200).json({
+      success: false,
+      message: 'Order details retrieved successfully',
+      order: order,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving order details', error });
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving order details',
+      error: error.message,
+    });
   }
 };
 
@@ -143,11 +180,17 @@ exports.getCustomerOrders = async (req, res) => {
   try {
     const { customerId } = req.params;
     const orders = await Order.find({ customerId });
-    res.status(200).json(orders);
+    res.status(200).json({
+      success: true,
+      message: 'Order retrieved successfully',
+      order: orders,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error retrieving customer orders', error });
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving customer orders',
+      error: error.message,
+    });
   }
 };
 
@@ -155,9 +198,17 @@ exports.getCustomerOrders = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
-    res.status(200).json(orders);
+    res.status(200).json({
+      success: true,
+      message: 'Orders retrieved successfully',
+      orders: orders,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving orders', error });
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving orders',
+      error: error.message,
+    });
   }
 };
 
@@ -167,12 +218,20 @@ exports.deleteOrder = async (req, res) => {
     const { id } = req.params;
     const order = await Order.findByIdAndDelete(id);
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found',
+      });
     }
-    res.status(200).json({ message: 'Order deleted successfully' });
+    res.status(200).json({
+      success: true,
+      message: 'Order deleted successfully',
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error deleting order', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting order',
+      error: error.message,
+    });
   }
 };

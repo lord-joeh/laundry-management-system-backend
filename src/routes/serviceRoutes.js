@@ -1,20 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const serviceController = require('../controllers/serviceController');
+const {
+  getAllServices,
+  getServiceById,
+  createService,
+  updateService,
+  deleteService,
+} = require('../controllers/serviceController');
+const { authenticate } = require('../middleware/auth');
 
 // Route to get all available laundry services
-router.get('/allServices', serviceController.getAllServices);
+router.get('/', getAllServices);
 
 // Route to get details of a specific service by ID
-router.get('/:id', serviceController.getServiceById);
+router.get('/:id', getServiceById);
 
 // Route to create a new laundry service (admin only)
-router.post('/createService', serviceController.createService);
+router.post('/', authenticate, createService);
 
 // Route to update an existing laundry service (admin only)
-router.put('/:id', serviceController.updateService);
+router.put('/:id', authenticate, updateService);
 
 // Route to delete a laundry service (admin only)
-router.delete('/:id', serviceController.deleteService);
+router.delete('/:id', authenticate, deleteService);
 
 module.exports = router;
