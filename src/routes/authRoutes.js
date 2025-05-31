@@ -8,6 +8,7 @@ const {
   logout,
   updateUser,
   deleteUser,
+  changePassword,
 } = require('../controllers/authController');
 const { authenticate } = require('../middleware/auth');
 
@@ -22,6 +23,9 @@ router.post('/reset-password', authenticate, resetPassword);
 
 // Route for password reset
 router.post('/forgot-password', forgotPassword);
+
+//Route to change password
+router.post('/change-password', authenticate, changePassword)
 
 //Route for user update
 router.put('/:id', authenticate, updateUser);

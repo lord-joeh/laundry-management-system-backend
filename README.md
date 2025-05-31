@@ -67,9 +67,11 @@ laundry-service-app/
 - `POST /api/auth/login`: Login a user.
 - `POST /api/auth/reset-password`: Reset user password.
 - `POST /api/auth/forgot-password`: Request a password reset.
+- `POST /api/auth/change-password`: Change Password
 - `GET /api/auth/logout`: Logout a user.
 - `PUT /api/auth/:id`: Update User information.
 - `DELETE /api/auth/:id`: Delete a user.
+
 
 ### Customer
 - `POST /api/customers/`: Create a new customer.

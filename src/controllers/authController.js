@@ -3,21 +3,21 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sendEmail, sendNotification } = require('../utils/email');
 const { sendSMS } = require('../utils/sms');
+const generator = require('generate-password');
 require('dotenv').config();
 
 // Register a new user
 exports.register = async (req, res) => {
-  const { name, phoneNumber, email, password, role } = req.body;
-
-  // Check all fields are provided
-  if (!name || !phoneNumber || !email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: 'All fields are required',
-    });
-  }
-
   try {
+    const { name, phoneNumber, email, role } = req.body;
+
+    // Check all fields are provided
+    if (!name || !phoneNumber || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'All fields are required',
+      });
+    }
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -26,6 +26,12 @@ exports.register = async (req, res) => {
         message: 'User already exists',
       });
     }
+    const password = generator.generate({
+      length: 12,
+      numbers: true,
+      strict: true,
+    });
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       name,
@@ -42,6 +48,9 @@ exports.register = async (req, res) => {
                 <h2 style="color: #007bff;">Welcome to Styles Laundry Service!</h2>
                 <p>Dear ${name},</p>
                 <p>Welcome, as you join styles laundry service ${role}s. We are excited to have you on board.</p>
+                <h3 style="color: #007bff;">Login Details</h3>
+                <p>Email: ${email} </p>
+                <p>Password: ${password} </p>
                 <p>If you have any questions, feel free to contact us at any time.</p>
                 <p>Best regards,</p>
                 <p><strong>Styles Laundry Service Team</strong></p>
@@ -68,9 +77,14 @@ exports.register = async (req, res) => {
 
 // Login user
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and Password are required',
+      });
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({
@@ -92,6 +106,7 @@ exports.login = async (req, res) => {
     });
     res.status(200).json({
       success: true,
+      message: 'Login Successful',
       token,
       user: {
         id: user._id,
@@ -113,6 +128,13 @@ exports.login = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and New Password Required',
+      });
+    }
 
     // Find the user by email
     const user = await User.findOne({ email });
@@ -262,6 +284,47 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'User deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message,
+    });
+  }
+};
+
+//Change Password
+exports.changePassword = async (req, res) => {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Old and New Password required',
+      });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(404).json({
+        success: false,
+        message: 'Incorrect Password',
+      });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(201).json({
+      success: true,
+      message: 'Password successfully changed',
     });
   } catch (error) {
     res.status(500).json({
