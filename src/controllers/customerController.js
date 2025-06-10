@@ -6,14 +6,14 @@ const { sendSMS } = require('../utils/sms');
 exports.createCustomer = async (req, res) => {
   try {
     const { name, phoneNumber, email } = req.body;
-    if (!name || phoneNumber || email) {
+    if (!name || !phoneNumber || !email) {
       return res.status(400).json({
         success: false,
         message: 'All fields are required',
       });
     }
     const newCustomer = new Customer({ name, phoneNumber, email });
-    await newCustomer.save();
+    await newCustomer.save(); 
 
     // Send email to customer
     sendNotification(
@@ -138,6 +138,7 @@ exports.getAllCustomers = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Customers retrieved successfully',
+      total: customers.length,
       customer: customers,
     });
   } catch (error) {

@@ -9,8 +9,12 @@ const {
   updateUser,
   deleteUser,
   changePassword,
+  getAllUsers,
 } = require('../controllers/authController');
 const { authenticate } = require('../middleware/auth');
+
+//Route to get all users
+router.get('/', getAllUsers);
 
 // Route for user registration
 router.post('/register', register);
@@ -25,15 +29,15 @@ router.post('/reset-password', authenticate, resetPassword);
 router.post('/forgot-password', forgotPassword);
 
 //Route to change password
-router.post('/change-password', authenticate, changePassword)
+router.post('/change-password', authenticate, changePassword);
 
 //Route for user update
 router.put('/:id', authenticate, updateUser);
 
 //Route for user logout
-router.get('/logout', authenticate, logout);
+router.post('/logout', authenticate, logout);
 
 //Route to delete user
-router.delete('/:id', authenticate, deleteUser)
+router.delete('/:id', authenticate, deleteUser);
 
 module.exports = router;

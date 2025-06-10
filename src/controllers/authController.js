@@ -334,3 +334,33 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
+
+//Get all Users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) {
+      return res.status(404).json({
+        success: true,
+        message: 'No User Found',
+      });
+    }
+
+    users.map((user) => {
+      user.password = undefined;
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Users retrieved successfully',
+      total: users.length,
+      users: users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message,
+    });
+  }
+};
