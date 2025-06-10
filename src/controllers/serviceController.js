@@ -1,4 +1,5 @@
 const Service = require('../models/Service');
+const crypto = require('crypto');
 
 // Get all laundry services
 exports.getAllServices = async (req, res) => {
@@ -52,7 +53,9 @@ exports.createService = async (req, res) => {
       message: 'All fields are required',
     });
   }
-  const newService = new Service({ serviceType, description, price });
+  const id = crypto.randomInt(8).toString();
+
+  const newService = new Service({ _id: id, serviceType, description, price });
   try {
     const savedService = await newService.save();
     res.status(201).json({
