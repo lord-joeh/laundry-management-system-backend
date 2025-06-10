@@ -7,7 +7,7 @@ const serviceSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    serviceType: {
+    serviceName: {
       type: String,
       required: true,
       trim: true,

@@ -8,12 +8,12 @@ const { sendSMS } = require('../utils/sms');
 const calculateTotalAmount = async (services) => {
   let totalAmount = 0;
   for (const service of services) {
-    const serviceDetails = await Service.findById(service.serviceType);
+    const serviceDetails = await Service.findById(service.serviceName);
     if (!serviceDetails) {
-      throw new Error(`Service not found for ID: ${service.serviceType}`);
+      throw new Error(`Service not found for ID: ${service.serviceName}`);
     }
     service.price = serviceDetails.price; // Ensure price is set
-    service.name = serviceDetails.serviceType; // Add service name
+    service.name = serviceDetails.serviceName; // Add service name
     totalAmount += serviceDetails.price * service.quantity;
   }
   return totalAmount;

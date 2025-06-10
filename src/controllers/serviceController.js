@@ -47,8 +47,8 @@ exports.getServiceById = async (req, res) => {
 
 // Create a new laundry service
 exports.createService = async (req, res) => {
-  const { serviceType, description, price } = req.body;
-  if (!serviceType || !description || !price) {
+  const { serviceName, description, price } = req.body;
+  if (!serviceName || !description || !price) {
     return res.status(403).json({
       success: false,
       message: 'All fields are required',
@@ -56,7 +56,7 @@ exports.createService = async (req, res) => {
   }
   const id = crypto.randomInt(10000000, 99999999).toString();
 
-  const newService = new Service({ _id: id, serviceType, description, price });
+  const newService = new Service({ _id: id, serviceName, description, price });
   try {
     const savedService = await newService.save();
     res.status(201).json({
@@ -76,11 +76,11 @@ exports.createService = async (req, res) => {
 // Update an existing laundry service
 exports.updateService = async (req, res) => {
   const { id } = req.params;
-  const { serviceType, description, price } = req.body;
+  const { serviceName, description, price } = req.body;
   try {
     const updatedService = await Service.findByIdAndUpdate(
       id,
-      { serviceType, description, price },
+      { serviceName, description, price },
       { new: true },
     );
     if (!updatedService) {

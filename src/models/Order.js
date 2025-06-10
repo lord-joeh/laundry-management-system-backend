@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema(
     },
     services: [
       {
-        serviceType: {
+        serviceName: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Service',
           required: true,
