@@ -14,7 +14,7 @@ const {
 const { authenticate } = require('../middleware/auth');
 
 //Route to get all users
-router.get('/', getAllUsers);
+router.get('/', authenticate, getAllUsers);
 
 // Route for user registration
 router.post('/register', register);
