@@ -32,10 +32,13 @@ exports.createOrder = async (req, res) => {
       });
     }
 
+    const id = crypto.randomInt(10000000, 99999999).toString();
+
     // Calculate the total amount
     const totalAmount = await calculateTotalAmount(services);
 
     const order = new Order({
+      _id: id,
       customerId,
       services,
       totalAmount,
@@ -54,7 +57,7 @@ exports.createOrder = async (req, res) => {
             ${services
               .map(
                 (s) =>
-                  `<li style="margin-bottom: 10px;"><strong>Service:</strong> ${s.name}, <strong>Quantity:</strong> ${s.quantity}, <strong>Price:</strong> GHS ${s.price}</li>`,
+                  `<li style="margin-bottom: 10px;"><strong>Service:</strong> ${s.name}, <strong>Qty:</strong> ${s.quantity}, <strong>Price:</strong> GHS ${s.price}</li>`,
               )
               .join('')}
           </ul>

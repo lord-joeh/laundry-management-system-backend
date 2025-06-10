@@ -8,6 +8,7 @@ exports.getAllServices = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Services retrieved successfully',
+      total: services.length,
       service: services,
     });
   } catch (error) {
@@ -53,7 +54,7 @@ exports.createService = async (req, res) => {
       message: 'All fields are required',
     });
   }
-  const id = crypto.randomInt(8).toString();
+  const id = crypto.randomInt(10000000, 99999999).toString();
 
   const newService = new Service({ _id: id, serviceType, description, price });
   try {
